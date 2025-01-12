@@ -1,4 +1,6 @@
 from Crypto.Cipher import PKCS1_OAEP
+from Crypto.Cipher import AES, DES, Blowfish
+
 
 def decrypt_data(method, ciphertext, key, additional_params):
     if method == 1:  # AES
