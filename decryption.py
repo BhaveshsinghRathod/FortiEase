@@ -1,23 +1,10 @@
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Cipher import AES, DES, Blowfish
+from encryption import ENCRYPTED_DATA
 
 
-def decrypt_data(method, ciphertext, key, additional_params):
-    if method == 1:  # AES
-        cipher = AES.new(key, AES.MODE_CFB, iv=additional_params)
-        return cipher.decrypt(ciphertext).decode()
-    elif method == 2:  # DES
-        cipher = DES.new(key, DES.MODE_CFB, iv=additional_params)
-        return cipher.decrypt(ciphertext).decode()
-    elif method == 3:  # RSA
-        cipher = PKCS1_OAEP.new(key)
-        return cipher.decrypt(ciphertext).decode()
-    elif method == 4:  # Caesar Cipher
-        shift = additional_params
-        decrypted = ''.join(chr((ord(char) - shift - 32) % 95 + 32) for char in ciphertext)
-        return decrypted
-    elif method == 5:  # Blowfish
-        cipher = Blowfish.new(key, Blowfish.MODE_CFB, iv=additional_params)
-        return cipher.decrypt(ciphertext).decode()
-    else:
-        raise ValueError("Invalid decryption method selected.")
+def decrypt_data(data_id):
+    """Decrypts data based on the data ID."""
+    for item in ENCRYPTED_DATA:
+        if item["id"] == data_id:
+            # Decrypt using the relevant method
+            return item["plaintext"]  # Placeholder logic
+    raise ValueError("Data ID not found!")

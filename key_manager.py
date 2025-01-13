@@ -1,17 +1,16 @@
-from Crypto.Random import get_random_bytes
-from Crypto.PublicKey import RSA
+import random  # Import the random module
 
 def generate_key(method, difficulty):
-    if method == 1:  # AES
-        key_sizes = {1: 16, 2: 24, 3: 32}  # Easy, Medium, Hard
-        return get_random_bytes(key_sizes[difficulty])
-    elif method == 2:  # DES
-        return get_random_bytes(8)  # DES uses an 8-byte key
-    elif method == 3:  # RSA
-        key_sizes = {1: 1024, 2: 2048, 3: 4096}  # Updated to meet minimum requirements
-        return RSA.generate(key_sizes[difficulty])
-    elif method == 5:  # Blowfish
-        key_sizes = {1: 16, 2: 24, 3: 32}  # Easy, Medium, Hard
-        return get_random_bytes(key_sizes[difficulty])
+    """Generates a key based on the method and difficulty level."""
+    if method in {"AES", "DES", "BLOWFISH"}:
+        # Generate a random key with length based on difficulty level
+        return bytes([random.randint(0, 255) for _ in range(difficulty * 8)])
+    elif method == "CAESAR":
+        # Generate a random shift value for Caesar cipher
+        return random.randint(1, 25)
+    elif method == "RSA":
+        # Generate an RSA key pair
+        from Crypto.PublicKey import RSA
+        return RSA.generate(2048)
     else:
-        return None  # Caesar Cipher does not require a key
+        raise ValueError(f"Unsupported encryption method: {method}")
